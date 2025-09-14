@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: PG Summary Service
+  version: 1.0.0
+  description: API for fetching, storing, and listing database summaries.
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /summary/sync:
+    post:
+      summary: Sync summary from external database
+      description: Fetches summary from external DB and stores it locally
+      tags:
+        - Summary
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoteDBDetails'
+      responses:
+        '200':
+          description: Sync triggered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: sync triggered
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /summaries:
+    get:
+      summary: Get list of summaries
+      description: Returns a paginated list of all summaries
+      tags:
+        - Summary
+      parameters:
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: List of summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LocalSummaryListItem'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+  /summaries/{id}:
+    get:
+      summary: Get summary by ID
+      description: Returns detailed summary for a given ID
+      tags:
+        - Summary
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Summary details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalSummaryByIdResp'
+        '404':
+          description: Summary not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+
+components:
+  schemas:
+    RemoteDBDetails:
+      type: object
+      required:
+        - host
+        - port
+        - user
+        - password
+        - dbname
+      properties:
+        host:
+          type: string
+          example: localhost
+        port:
+          type: integer
+          example: 5432
+        user:
+          type: string
+          example: postgres
+        password:
+          type: string
+          example: mypassword
+        dbname:
+          type: string
+          example: mydb
+
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 400
+        message:
+          type: string
+          example: invalid input
+
+    LocalSummaryListItem:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: sum-12345
+        DBName:
+          type: string
+          example: mydb
+        SyncedAt:
+          type: string
+          format: date-time
+          example: 2025-09-14T10:00:00Z
+
+    LocalSummaryByIdResp:
+      type: object
+      properties:
+        ID:
+          type: string
+          example: sum-12345
+        DBName:
+          type: string
+          example: mydb
+        SyncedAt:
+          type: string
+          format: date-time
+          example: 2025-09-14T10:00:00Z
+        Schemas:
+          type: array
+          items:
+            type: object
+            properties:
+              Name:
+                type: string
+                example: public
+              Tables:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    Name:
+                      type: string
+                      example: users
+                    RowCount:
+                      type: integer
+                      example: 1240
+                    SizeMB:
+                      type: number
+                      format: float
+                      example: 12.5
