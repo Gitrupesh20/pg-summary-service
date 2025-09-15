@@ -1,0 +1,23 @@
+# IDE files
+.idea/
+.vscode/
+
+# Go build output
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Binaries
+/main
+
+# Logs
+*.log
+test/logs/
+cmd/logs/
+
+# OS files
+.DS_Store
+Thumbs.db

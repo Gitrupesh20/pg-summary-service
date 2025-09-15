@@ -29,13 +29,14 @@ func LoadConfig() error {
 	localDb := os.Getenv("LOCAL_DB_URL")
 	if localDb == "" {
 		fmt.Println("No external db url set, using default")
-		localDb = "postgresql://neondb_owner:npg_xYGowIyT68DZ@ep-purple-mouse-a1cneoys-pooler.ap-southeast-1.aws.neon.tech/p_v1?sslmode=require"
+		return fmt.Errorf("no external db url set, using default")
 	}
 
 	externalDb := os.Getenv("EXTERNAL_API_URL")
 	if externalDb == "" {
 		fmt.Println("No external api url set, using default")
 		//externalDb = "http://localhost:3000/api/summary" //"http://external-service.local/api/summary" // fallback default
+		return fmt.Errorf("no external db url set, using default")
 	}
 
 	port := getEnv("PORT", "8080") // default is fine
