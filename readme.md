@@ -69,18 +69,28 @@ PostgreSQL DB
 
 ## Setup & Run
 
-0. **Clone Repo**
+1. **Clone Repo**
 
 ```bash
 git clone https://github.com/Gitrupesh20/pg-summary-service.git
 ````
-1. **Navigate to repository**
+2. **Navigate to repository**
 
 ```bash
-cd pg-summary-service
+1. cd pg-summary-service
+2. cd cmd/
 ````
+3. **To run locally**
+> If you want to run the service locally without Docker, make sure Go >= 1.24 is installed and run 
+```bash
+go mod tidy
+````
+before
 
-2. **Set up environment variables**
+```bash
+1. go run main.go.
+````
+4. **Set up environment variables**
 
 Environment variables can be loaded from a JSON/YAML config file or set directly:
 > Set LOCAL_DB_URL (optional) and EXTERNAL_API_URL Key in Docker file 
@@ -92,7 +102,7 @@ Environment variables can be loaded from a JSON/YAML config file or set directly
 > * `EXTERNAL_API_URL` must be reachable from Docker. Use `host.docker.internal` for APIs running on your host machine ( it is required, local or remote ).
 >* EXTERNAL_API_URL=http://host.docker.internal:3000/api/summary ( this will work only if externaln api run on port:3000)
 
-3. **Build and run with Docker**
+4. **Build and run with Docker**
 
 ```bash
 docker-compose up --build
