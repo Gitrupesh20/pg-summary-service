@@ -69,25 +69,28 @@ PostgreSQL DB
 
 ## Setup & Run
 
+0. **Clone Repo**
+
+```bash
+git clone https://github.com/Gitrupesh20/pg-summary-service.git
+````
 1. **Navigate to repository**
 
 ```bash
-cd PgDataSummaryService-AppVersal
+cd pg-summary-service
 ````
 
 2. **Set up environment variables**
 
 Environment variables can be loaded from a JSON/YAML config file or set directly:
->Note: Set LOCAL_DB_URL (optional) and EXTERNAL_API_URL Key in Docker file 
-```env
-LOCAL_DB_URL=postgres://postgres:postgres@db:5432/localdb?sslmode=disable
-EXTERNAL_API_URL=http://host.docker.internal:3000/api/summary ( this will work only if externalnapi run on port:3000)
-```
+> Set LOCAL_DB_URL (optional) and EXTERNAL_API_URL Key in Docker file 
+
 
 > **Notes:**
 >
 > * If you don’t set `LOCAL_DB_URL`, the service will default to the bundled Postgres container (`db` in docker-compose).
 > * `EXTERNAL_API_URL` must be reachable from Docker. Use `host.docker.internal` for APIs running on your host machine ( it is required, local or remote ).
+>* EXTERNAL_API_URL=http://host.docker.internal:3000/api/summary ( this will work only if externaln api run on port:3000)
 
 3. **Build and run with Docker**
 
